@@ -3,12 +3,12 @@ package example.tacademy.com.samplelbs;
 import com.skp.Tmap.TMapPOIItem;
 
 /**
- * Created by Tacademy on 2016-08-18.
+ * Created by Administrator on 2016-08-18.
  */
-public class POI {
+public class PointOfInterest {
     TMapPOIItem item;
 
-    public POI(TMapPOIItem item){
+    public PointOfInterest(TMapPOIItem item) {
         this.item = item;
     }
 

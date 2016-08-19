@@ -34,29 +34,30 @@ import com.skp.Tmap.TMapView;
 
 import java.util.ArrayList;
 
+import example.tacademy.com.samplelbs.data.POI;
+
 public class TMapActivity extends AppCompatActivity {
 
     TMapView mapView;
 
     LocationManager mLM;
-    String mProvider = LocationManager.NETWORK_PROVIDER;
+    String mProvider = LocationManager.GPS_PROVIDER;
 
     EditText keywordView;
     ListView listView;
-    ArrayAdapter<POI> mAdapter;
+    ArrayAdapter<PointOfInterest> mAdapter;
 
     TMapPoint start, end;
     RadioGroup typeView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmap);
         typeView = (RadioGroup)findViewById(R.id.group_type);
-        keywordView = (EditText) findViewById(R.id.edit_keyword);
-        listView = (ListView) findViewById(R.id.listView);
-        mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1);
+        keywordView = (EditText)findViewById(R.id.edit_keyword);
+        listView = (ListView)findViewById(R.id.listView);
+        mAdapter = new ArrayAdapter<PointOfInterest>(this, android.R.layout.simple_list_item_1);
         listView.setAdapter(mAdapter);
 
         mLM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -77,10 +78,10 @@ public class TMapActivity extends AppCompatActivity {
 
             }
         });
-        mapView.setSKPMapApiKey("9e719482-ed73-3153-9f91-5bcb75e149d5");
+        mapView.setSKPMapApiKey("2bc7afe3-fc89-3125-b699-b9fb7cfe2fae");
         mapView.setLanguage(TMapView.LANGUAGE_KOREAN);
 
-        Button btn = (Button) findViewById(R.id.btn_add_marker);
+        Button btn = (Button)findViewById(R.id.btn_add_marker);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +90,7 @@ public class TMapActivity extends AppCompatActivity {
             }
         });
 
-        btn = (Button) findViewById(R.id.btn_search);
+        btn = (Button)findViewById(R.id.btn_search);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +101,7 @@ public class TMapActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                POI poi = (POI) listView.getItemAtPosition(position);
+                PointOfInterest poi = (PointOfInterest)listView.getItemAtPosition(position);
                 moveMap(poi.item.getPOIPoint().getLatitude(), poi.item.getPOIPoint().getLongitude());
             }
         });
@@ -112,14 +113,15 @@ public class TMapActivity extends AppCompatActivity {
                 if (start != null && end != null) {
                     searchRoute(start, end);
                     start = end = null;
-                }else{
-                    Toast.makeText(TMapActivity.this,"start or end is null", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(TMapActivity.this, "start or end is null", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
 
-    private void searchRoute(TMapPoint start, TMapPoint end){
+    private void searchRoute(TMapPoint start, TMapPoint end) {
         TMapData data = new TMapData();
         data.findPathData(start, end, new TMapData.FindPathDataListenerCallback() {
             @Override
@@ -133,7 +135,6 @@ public class TMapActivity extends AppCompatActivity {
                         Bitmap s = ((BitmapDrawable)ContextCompat.getDrawable(TMapActivity.this, android.R.drawable.ic_input_delete)).getBitmap();
                         Bitmap e = ((BitmapDrawable)ContextCompat.getDrawable(TMapActivity.this, android.R.drawable.ic_input_get)).getBitmap();
                         mapView.setTMapPathIcon(s, e);
-
                     }
                 });
             }
@@ -155,7 +156,7 @@ public class TMapActivity extends AppCompatActivity {
 
                             for (TMapPOIItem poi : arrayList) {
                                 addMarker(poi);
-                                mAdapter.add(new POI(poi));
+                                mAdapter.add(new PointOfInterest(poi));
                             }
 
                             if (arrayList.size() > 0) {
@@ -172,34 +173,33 @@ public class TMapActivity extends AppCompatActivity {
     public void addMarker(TMapPOIItem poi) {
         TMapMarkerItem item = new TMapMarkerItem();
         item.setTMapPoint(poi.getPOIPoint());
-        Bitmap icon = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_input_add)).getBitmap();
+        Bitmap icon = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_input_add)).getBitmap();
         item.setIcon(icon);
         item.setPosition(0.5f, 1);
         item.setCalloutTitle(poi.getPOIName());
         item.setCalloutSubTitle(poi.getPOIContent());
-        Bitmap left = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_dialog_alert)).getBitmap();
+        Bitmap left = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_dialog_alert)).getBitmap();
         item.setCalloutLeftImage(left);
-        Bitmap right = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_input_get)).getBitmap();
+        Bitmap right = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_input_get)).getBitmap();
         item.setCalloutRightButtonImage(right);
         item.setCanShowCallout(true);
         mapView.addMarkerItem(poi.getPOIID(), item);
     }
-
     private void addMarker(double lat, double lng, String title) {
         TMapMarkerItem item = new TMapMarkerItem();
         TMapPoint point = new TMapPoint(lat, lng);
         item.setTMapPoint(point);
-        Bitmap icon = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_input_add)).getBitmap();
+        Bitmap icon = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_input_add)).getBitmap();
         item.setIcon(icon);
         item.setPosition(0.5f, 1);
         item.setCalloutTitle(title);
         item.setCalloutSubTitle("sub " + title);
-        Bitmap left = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_dialog_alert)).getBitmap();
+        Bitmap left = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_dialog_alert)).getBitmap();
         item.setCalloutLeftImage(left);
-        Bitmap right = ((BitmapDrawable) ContextCompat.getDrawable(this, android.R.drawable.ic_input_get)).getBitmap();
+        Bitmap right = ((BitmapDrawable)ContextCompat.getDrawable(this, android.R.drawable.ic_input_get)).getBitmap();
         item.setCalloutRightButtonImage(right);
         item.setCanShowCallout(true);
-        mapView.addMarkerItem("m" + id, item);
+        mapView.addMarkerItem("m"+id,item);
         id++;
     }
 
@@ -210,29 +210,29 @@ public class TMapActivity extends AppCompatActivity {
     private void setupMap() {
         isInitialized = true;
         mapView.setMapType(TMapView.MAPTYPE_STANDARD);
-        //        mapView.setSightVisible(true);
-        //        mapView.setCompassMode(true);
-        //        mapView.setTrafficInfo(true);
-        //        mapView.setTrackingMode(true);
+//        mapView.setSightVisible(true);
+//        mapView.setCompassMode(true);
+//        mapView.setTrafficInfo(true);
+//        mapView.setTrackingMode(true);
         if (cacheLocation != null) {
             moveMap(cacheLocation.getLatitude(), cacheLocation.getLongitude());
             setMyLocation(cacheLocation.getLatitude(), cacheLocation.getLongitude());
         }
         mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
             @Override
-            public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+            public void onCalloutRightButton(TMapMarkerItem marker) {
                 String message = null;
-                switch (typeView.getCheckedRadioButtonId()){
-                    case R.id.radio_start:
-                        start = tMapMarkerItem.getTMapPoint();
+                switch (typeView.getCheckedRadioButtonId()) {
+                    case R.id.radio_start :
+                        start = marker.getTMapPoint();
                         message = "start";
                         break;
-                    case R.id.radio_end:
-                        end = tMapMarkerItem.getTMapPoint();
+                    case R.id.radio_end :
+                        end = marker.getTMapPoint();
                         message = "end";
                         break;
                 }
-                Toast.makeText(TMapActivity.this,message + " setting",Toast.LENGTH_SHORT).show();
+                Toast.makeText(TMapActivity.this, message + " setting", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -260,7 +260,6 @@ public class TMapActivity extends AppCompatActivity {
     }
 
     Location cacheLocation = null;
-
     private void moveMap(double lat, double lng) {
         mapView.setCenterPoint(lng, lat);
     }
