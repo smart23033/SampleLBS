@@ -29,6 +29,45 @@
             android:id="@+id/btn_search" />
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C"
+            android:id="@+id/btn_capture" />
+
+        <RadioGroup
+            android:id="@+id/group_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radio_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/radio_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="end"/>
+        </RadioGroup>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="route"
+            android:id="@+id/btn_route" />
+
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -48,5 +87,4 @@
             android:id="@+id/listView"
             android:layout_gravity="left|top" />
     </FrameLayout>
-
 </LinearLayout>
